@@ -1,0 +1,11 @@
+Google Maps API -- Maps URLs
+https://developers.google.com/maps/documentation/urls
+
+1.Search
+https://www.google.com/maps/search/?api=1&query={place name}(address)
+
+2.Direction (交通方式為開車)
+https://www.google.com/maps/dir/?api=1&origin={place name}&destination={place name}&travelmode=driving
+
+若有經過地點，多個連接地點加(|) 例如：五權車站|台中火車站
+https://www.google.com/maps/dir/?api=1&origin={place name}&waypoints={place name}&destination={place name}&travelmode=driving
