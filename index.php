@@ -1,98 +1,98 @@
 <?php
-session_start();
-require_once "connMysql.php";
-//預設每頁筆數
-$pageRow_records = 5;
-//預設頁數
-$num_pages = 1;
-//若已經有翻頁，將頁數更新
-if (isset($_GET['page'])) {
-	$num_pages = $_GET['page'];
-}
-// 本頁開始記錄筆數 = (頁數-1)*每頁記錄筆數
-$startRow_records = ($num_pages - 1) * $pageRow_records;
-// 查詢要顯示在選單的區域資料
-$area = $db_link->query("SELECT * FROM area");
-// 取現在日期
-$now_date = date("Y-m-d");
-$date_arr = explode("-", $now_date);
-$now_year = $date_arr[0];
-$now_month = $date_arr[1];
-$now_day = $date_arr[2];
-// 設定SESSION暫存值（換頁）
-if (isset($_POST["action"]) && $_POST["action"] == "search") {
-	$_SESSION["action"] = $_POST["action"];
-	$_SESSION["month"] = $_POST["month"];
-	$_SESSION["name"] = $_POST["name"];
-	header("Location: index.php");
-}
-
-$sql_query_search = "SELECT case_number.c_no, case_number.c_id, case_number.c_sign, object.ob_office, object.ob_ver, object.ob_add_c, object.ob_count, object.ob_evcount, committee_a.com_a, committee_a.com_a_addr, committee_a.com_a_mail, committee_b.com_b, committee_b.com_b_addr, committee_b.com_b_mail, assistant.ass_actual, assistant.ass_addr, assistant.ass_mail, `date`.d_date, `date`.`d_week`, `date`.`d_per`, contact.con_name, contact.con_phone,  contact.con_email, job.job_upload, job.job_closed FROM case_number JOIN committee_a ON committee_a.com_a_id = case_number.c_com_a LEFT OUTER JOIN committee_b ON committee_b.com_b_id = case_number.c_com_b LEFT OUTER JOIN assistant ON case_number.c_ass = assistant.ass_id LEFT OUTER JOIN object ON object.ob_no = case_number.c_id JOIN `date` ON `date`.`d_no` = case_number.c_id LEFT OUTER JOIN contact ON contact.con_id = object.ob_con_name LEFT OUTER JOIN job ON case_number.c_job = job.job_id";
-
-// 若執行查詢
-if ((isset($_SESSION["action"]) && $_SESSION["action"] == "search") || ($_GET["page"] && isset($_SESSION["action"]) && $_SESSION["action"] == "search")) {
-	// 同時查詢月份及委員名字
-	if (isset($_SESSION["month"]) && isset($_SESSION["name"])) {
-		// 未加限制
-		$condition_query_search = "{$sql_query_search} WHERE (d_date LIKE ? AND committee_a.com_a = ?) OR (d_date LIKE ? AND committee_b.com_b = ?) ORDER BY case_number.c_id ASC";
-		// 加限制
-		$limit_query_search = "{$condition_query_search} LIMIT {$startRow_records}, {$pageRow_records}";
-		// 預處理
-		$stmt_limit = $db_link->prepare($limit_query_search);
-		$stmt_limit->bind_param("ssss", $s_month, $s_name, $s_month, $s_name);
-		$s_month = "%-" . $_SESSION["month"] . "-%";
-		$s_name = $_SESSION["name"];
-		// 以未加限制語法查詢總筆數
-		$all_RecBoard = $db_link->query("{$sql_query_search} WHERE (d_date LIKE '{$s_month}' AND committee_a.com_a = '{$s_name}') OR (d_date LIKE '{$s_month}' AND committee_b.com_b = '{$s_name}')");
-		$total_rec = $all_RecBoard->num_rows;
-		// 預處理執行
-		$stmt_limit->execute();
-		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
-		$show_month = $_SESSION["month"];
-		// 只查詢月份或委員名字
-	} else {
-		$condition_query_search = "{$sql_query_search} WHERE d_date LIKE ? OR committee_a.com_a = ? OR committee_b.com_b = ? ORDER BY case_number.c_id ASC";
-		$limit_query_search = "{$condition_query_search} LIMIT {$startRow_records}, {$pageRow_records}";
-		$stmt_limit = $db_link->prepare($limit_query_search);
-		$stmt_limit->bind_param("sss", $s_month, $s_name, $s_name);
-		if (empty($_SESSION["month"])) { // 若沒有選擇月份
-			$s_month = $_SESSION["month"];
-		} else {
-			$s_month = "%-" . $_SESSION["month"] . "-%";
-		}
-		$s_name = $_SESSION["name"];
-		$all_RecBoard = $db_link->query("{$sql_query_search} WHERE d_date LIKE '{$s_month}' OR committee_a.com_a = '{$s_name}' OR committee_b.com_b = '{$s_name}'");
-		$total_rec = $all_RecBoard->num_rows;
-		$stmt_limit->execute();
-		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
-		$show_month = $_SESSION["month"];
+	session_start();
+	require_once "connMysql.php";
+	//預設每頁筆數
+	$pageRow_records = 5;
+	//預設頁數
+	$num_pages = 1;
+	//若已經有翻頁，將頁數更新
+	if (isset($_GET['page'])) {
+		$num_pages = $_GET['page'];
 	}
-} else { // 若未執行查詢
-	// 加條件SQL語法
-	$condition = "{$sql_query_search} WHERE d_date LIKE ? ORDER BY case_number.c_id ASC";
-	// 加限制SQL語法
-	$limit_query = "{$condition} LIMIT {$startRow_records}, {$pageRow_records}";
-	$stmt_limit = $db_link->prepare($limit_query);
-	$stmt_limit->bind_param("s", $s_month);
-	$s_month = "%-" . $now_month . "-%";
-	// 未加限制條件
-	$all_RecBoard = $db_link->query("{$sql_query_search} WHERE d_date LIKE '{$s_month}'");
-	$total_rec = $all_RecBoard->num_rows;
-	// 加限制條件預處理執行
-	$stmt_limit->execute();
-	$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
-	$show_month = $now_month; // 顯示月份
-}
-// 計算頁數（無條件進位）
-$total_pages = ceil($total_rec / $pageRow_records);
-if (isset($_GET["page"])) {
-	$_SESSION["total"] = $total_rec - $startRow_records;
-} else {
-	$_SESSION["total"] = $total_rec;
-}
-if ($show_month < 10) {
-	$show_month = substr($show_month, 1, 1);
-}
+	// 本頁開始記錄筆數 = (頁數-1)*每頁記錄筆數
+	$startRow_records = ($num_pages - 1) * $pageRow_records;
+	// 查詢要顯示在選單的區域資料
+	$area = $db_link->query("SELECT * FROM area");
+	// 取現在日期
+	$now_date = date("Y-m-d");
+	$date_arr = explode("-", $now_date);
+	$now_year = $date_arr[0];
+	$now_month = $date_arr[1];
+	$now_day = $date_arr[2];
+	// 設定SESSION暫存值（換頁）
+	if (isset($_POST["action"]) && $_POST["action"] == "search") {
+		$_SESSION["action"] = $_POST["action"];
+		$_SESSION["month"] = $_POST["month"];
+		$_SESSION["name"] = $_POST["name"];
+		header("Location: index.php");
+	}
+
+	$sql_query_search = "SELECT case_number.c_no, case_number.c_id, case_number.c_sign, object.ob_office, object.ob_ver, object.ob_add_c, object.ob_count, object.ob_evcount, committee_a.com_a, committee_a.com_a_addr, committee_a.com_a_mail, committee_b.com_b, committee_b.com_b_addr, committee_b.com_b_mail, assistant.ass_actual, assistant.ass_addr, assistant.ass_mail, `date`.d_date, `date`.`d_week`, `date`.`d_per`, contact.con_name, contact.con_phone,  contact.con_email, job.job_upload, job.job_closed FROM case_number JOIN committee_a ON committee_a.com_a_id = case_number.c_com_a LEFT OUTER JOIN committee_b ON committee_b.com_b_id = case_number.c_com_b LEFT OUTER JOIN assistant ON case_number.c_ass = assistant.ass_id LEFT OUTER JOIN object ON object.ob_no = case_number.c_id JOIN `date` ON `date`.`d_no` = case_number.c_id LEFT OUTER JOIN contact ON contact.con_id = object.ob_con_name LEFT OUTER JOIN job ON case_number.c_job = job.job_id";
+
+	// 若執行查詢
+	if ((isset($_SESSION["action"]) && $_SESSION["action"] == "search") || ($_GET["page"] && isset($_SESSION["action"]) && $_SESSION["action"] == "search")) {
+		// 同時查詢月份及委員名字
+		if (isset($_SESSION["month"]) && isset($_SESSION["name"])) {
+			// 未加限制
+			$condition_query_search = "{$sql_query_search} WHERE (d_date LIKE ? AND committee_a.com_a = ?) OR (d_date LIKE ? AND committee_b.com_b = ?) ORDER BY case_number.c_id ASC";
+			// 加限制
+			$limit_query_search = "{$condition_query_search} LIMIT {$startRow_records}, {$pageRow_records}";
+			// 預處理
+			$stmt_limit = $db_link->prepare($limit_query_search);
+			$stmt_limit->bind_param("ssss", $s_month, $s_name, $s_month, $s_name);
+			$s_month = "%-" . $_SESSION["month"] . "-%";
+			$s_name = $_SESSION["name"];
+			// 以未加限制語法查詢總筆數
+			$all_RecBoard = $db_link->query("{$sql_query_search} WHERE (d_date LIKE '{$s_month}' AND committee_a.com_a = '{$s_name}') OR (d_date LIKE '{$s_month}' AND committee_b.com_b = '{$s_name}')");
+			$total_rec = $all_RecBoard->num_rows;
+			// 預處理執行
+			$stmt_limit->execute();
+			$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+			$show_month = $_SESSION["month"];
+			// 只查詢月份或委員名字
+		} else {
+			$condition_query_search = "{$sql_query_search} WHERE d_date LIKE ? OR committee_a.com_a = ? OR committee_b.com_b = ? ORDER BY case_number.c_id ASC";
+			$limit_query_search = "{$condition_query_search} LIMIT {$startRow_records}, {$pageRow_records}";
+			$stmt_limit = $db_link->prepare($limit_query_search);
+			$stmt_limit->bind_param("sss", $s_month, $s_name, $s_name);
+			if (empty($_SESSION["month"])) { // 若沒有選擇月份
+				$s_month = $_SESSION["month"];
+			} else {
+				$s_month = "%-" . $_SESSION["month"] . "-%";
+			}
+			$s_name = $_SESSION["name"];
+			$all_RecBoard = $db_link->query("{$sql_query_search} WHERE d_date LIKE '{$s_month}' OR committee_a.com_a = '{$s_name}' OR committee_b.com_b = '{$s_name}'");
+			$total_rec = $all_RecBoard->num_rows;
+			$stmt_limit->execute();
+			$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+			$show_month = $_SESSION["month"];
+		}
+	} else { // 若未執行查詢
+		// 加條件SQL語法
+		$condition = "{$sql_query_search} WHERE d_date LIKE ? ORDER BY case_number.c_id ASC";
+		// 加限制SQL語法
+		$limit_query = "{$condition} LIMIT {$startRow_records}, {$pageRow_records}";
+		$stmt_limit = $db_link->prepare($limit_query);
+		$stmt_limit->bind_param("s", $s_month);
+		$s_month = "%-" . $now_month . "-%";
+		// 未加限制條件
+		$all_RecBoard = $db_link->query("{$sql_query_search} WHERE d_date LIKE '{$s_month}'");
+		$total_rec = $all_RecBoard->num_rows;
+		// 加限制條件預處理執行
+		$stmt_limit->execute();
+		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+		$show_month = $now_month; // 顯示月份
+	}
+	// 計算頁數（無條件進位）
+	$total_pages = ceil($total_rec / $pageRow_records);
+	if (isset($_GET["page"])) { // 若有頁數時顯示的序
+		$_SESSION["total"] = $total_rec - $startRow_records;
+	} else { // 無頁數時顯示的序
+		$_SESSION["total"] = $total_rec;
+	}
+	if ($show_month < 10) {
+		$show_month = substr($show_month, 1, 1);
+	}
 ?>
 <!DOCTYPE html>
 <html lang="zh-tw">
@@ -121,9 +121,9 @@ if ($show_month < 10) {
 </head>
 
 <body>
-	<div align="center"><img src="logo_1211.png" class="img-fluid" alt="Responsive image"></div>
 	<div id="all" class="container">
-		<div class="row">
+		<div class="row  justify-content-center">
+			<div align="center"><img src="logo_1211.png" class="img-fluid" alt="Responsive image"></div>
 			<div class="col-lg-12 searchbar">
 				<form action="" method="post" name="form1" class="table-responsive">
 					<table class="conatiner">
@@ -279,44 +279,44 @@ if ($show_month < 10) {
 					</table>
 				</div>
 			</div>
+			<!-- 顯示頁數 -->
+			<nav aria-label="Page navigation example col-lg-12">
+				<ul class="pagination">
+					<?php if ($num_pages > 1) { // 若不是第一頁顯示 
+					?>
+						<li class="page-item">
+							<a class="page-link" href="?page=1" aria-label="Previous">
+								<span aria-hidden="true">&laquo;</span>
+							</a>
+						</li>
+						<li>
+							<a class="page-link" href="?page=<?php echo $num_pages - 1; ?>">
+								<span aria-hidden="true">&lsaquo;</span>
+							</a>
+						</li>
+					<?php } ?>
+					<?php for ($i = 1; $i <= $total_pages; $i++) {
+						if ($i == $num_pages) {
+							echo '<li class="page-item"><a class="page-link">' . $i . '</a></li>';
+						} else {
+							echo '<li class="page-item"><a class="page-link" href="?page=' . $i . '">' . $i . '</a><input type="hidden" name="action" value="search"></li>';
+						}
+					} ?>
+					<?php if ($num_pages < $total_pages) { // 若不是最後一頁顯示 
+					?>
+						<li>
+							<a class="page-link" href="?page=<?php echo $num_pages + 1; ?>">
+								<span aria-hidden="true">&rsaquo;</span>
+							</a>
+						<li class="page-item">
+							<a class="page-link" href="?page=<?php echo $total_pages; ?>" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+							</a>
+						</li>
+					<?php } ?>
+				</ul>
+			</nav>
 		</div>
-		<!-- 顯示頁數 -->
-		<nav aria-label="Page navigation example col-12">
-			<ul class="pagination justify-content-center">
-				<?php if ($num_pages > 1) { // 若不是第一頁顯示 
-				?>
-					<li class="page-item">
-						<a class="page-link" href="?page=1" aria-label="Previous">
-							<span aria-hidden="true">&laquo;</span>
-						</a>
-					</li>
-					<li>
-						<a class="page-link" href="?page=<?php echo $num_pages - 1; ?>">
-							<span aria-hidden="true">&lsaquo;</span>
-						</a>
-					</li>
-				<?php } ?>
-				<?php for ($i = 1; $i <= $total_pages; $i++) {
-					if ($i == $num_pages) {
-						echo '<li class="page-item"><a class="page-link">' . $i . '</a></li>';
-					} else {
-						echo '<li class="page-item"><a class="page-link" href="?page=' . $i . '">' . $i . '</a><input type="hidden" name="action" value="search"></li>';
-					}
-				} ?>
-				<?php if ($num_pages < $total_pages) { // 若不是最後一頁顯示 
-				?>
-					<li>
-						<a class="page-link" href="?page=<?php echo $num_pages + 1; ?>">
-							<span aria-hidden="true">&rsaquo;</span>
-						</a>
-					<li class="page-item">
-						<a class="page-link" href="?page=<?php echo $total_pages; ?>" aria-label="Next">
-							<span aria-hidden="true">&raquo;</span>
-						</a>
-					</li>
-				<?php } ?>
-			</ul>
-		</nav>
 	</div>
 	<script src="option.js"></script>
 </body>
