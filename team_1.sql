@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- 主機： 127.0.0.1:3308
--- 產生時間： 
--- 伺服器版本： 8.0.18
--- PHP 版本： 7.3.12
+-- 主機： localhost
+-- 產生時間： 2020 年 12 月 21 日 16:50
+-- 伺服器版本： 10.4.17-MariaDB
+-- PHP 版本： 8.0.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -28,11 +27,9 @@ SET time_zone = "+00:00";
 -- 資料表結構 `accompany`
 --
 
-DROP TABLE IF EXISTS `accompany`;
-CREATE TABLE IF NOT EXISTS `accompany` (
-  `acc_id` int(11) NOT NULL AUTO_INCREMENT,
-  `acc_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '職訓中心陪同人員',
-  PRIMARY KEY (`acc_id`)
+CREATE TABLE `accompany` (
+  `acc_id` int(11) NOT NULL,
+  `acc_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '職訓中心陪同人員'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -41,11 +38,9 @@ CREATE TABLE IF NOT EXISTS `accompany` (
 -- 資料表結構 `allowance`
 --
 
-DROP TABLE IF EXISTS `allowance`;
-CREATE TABLE IF NOT EXISTS `allowance` (
-  `all_id` int(11) NOT NULL AUTO_INCREMENT,
-  `all_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '政府補助專案',
-  PRIMARY KEY (`all_id`)
+CREATE TABLE `allowance` (
+  `all_id` int(11) NOT NULL,
+  `all_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '政府補助專案'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -54,13 +49,11 @@ CREATE TABLE IF NOT EXISTS `allowance` (
 -- 資料表結構 `application`
 --
 
-DROP TABLE IF EXISTS `application`;
-CREATE TABLE IF NOT EXISTS `application` (
-  `app_id` int(11) NOT NULL AUTO_INCREMENT,
-  `app_info` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '申請資料',
-  `app_coach` enum('Y','N') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '是否輔導',
-  `app_rc` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '顧問/委員推薦',
-  PRIMARY KEY (`app_id`)
+CREATE TABLE `application` (
+  `app_id` int(11) NOT NULL,
+  `app_info` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '申請資料',
+  `app_coach` enum('Y','N') COLLATE utf8_unicode_ci NOT NULL COMMENT '是否輔導',
+  `app_rc` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '顧問/委員推薦'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -69,12 +62,10 @@ CREATE TABLE IF NOT EXISTS `application` (
 -- 資料表結構 `area`
 --
 
-DROP TABLE IF EXISTS `area`;
-CREATE TABLE IF NOT EXISTS `area` (
-  `a_id` int(11) NOT NULL AUTO_INCREMENT,
-  `a_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '委員區域',
-  PRIMARY KEY (`a_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `area` (
+  `a_id` int(11) NOT NULL,
+  `a_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '委員區域'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `area`
@@ -93,16 +84,14 @@ INSERT INTO `area` (`a_id`, `a_name`) VALUES
 -- 資料表結構 `assistant`
 --
 
-DROP TABLE IF EXISTS `assistant`;
-CREATE TABLE IF NOT EXISTS `assistant` (
-  `ass_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ass_actual` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '實際助理',
-  `ass_sign` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '簽單助理',
-  `ass_acc` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '陪同助理',
-  `ass_addr` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
-  `ass_mail` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email',
-  PRIMARY KEY (`ass_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `assistant` (
+  `ass_id` int(11) NOT NULL,
+  `ass_actual` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '實際助理',
+  `ass_sign` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '簽單助理',
+  `ass_acc` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '陪同助理',
+  `ass_addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
+  `ass_mail` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `assistant`
@@ -120,17 +109,15 @@ INSERT INTO `assistant` (`ass_id`, `ass_actual`, `ass_sign`, `ass_acc`, `ass_add
 -- 資料表結構 `case_number`
 --
 
-DROP TABLE IF EXISTS `case_number`;
-CREATE TABLE IF NOT EXISTS `case_number` (
-  `c_id` int(11) NOT NULL AUTO_INCREMENT,
-  `c_no` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
-  `c_com_a` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '委員A',
-  `c_com_b` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '委員B',
-  `c_ass` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '助理',
+CREATE TABLE `case_number` (
+  `c_id` int(11) NOT NULL,
+  `c_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
+  `c_com_a` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '委員A',
+  `c_com_b` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '委員B',
+  `c_ass` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '助理',
   `c_job` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '發文/上傳',
-  `c_sign` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '簽名',
-  PRIMARY KEY (`c_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `c_sign` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '簽名'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `case_number`
@@ -155,7 +142,7 @@ INSERT INTO `case_number` (`c_id`, `c_no`, `c_com_a`, `c_com_b`, `c_ass`, `c_job
 (16, '109AC4367', '45', '46', '3', '16', ''),
 (17, '109CC9521', '23', '', '2', '17', ''),
 (18, '109AC1512', '43', '', '', '18', '蒲婉華'),
-(19, '7365', '19', '', '4', '19', ''),
+(19, '109CC7365', '19', '', '4', '19', ''),
 (20, '109CC2558', '37', '', '1', '20', ''),
 (21, '109AC7088', '50', '51', '2', '21', ''),
 (22, '109AC1023', '9', '', '', '22', '薛朝原'),
@@ -169,15 +156,13 @@ INSERT INTO `case_number` (`c_id`, `c_no`, `c_com_a`, `c_com_b`, `c_ass`, `c_job
 -- 資料表結構 `committee_a`
 --
 
-DROP TABLE IF EXISTS `committee_a`;
-CREATE TABLE IF NOT EXISTS `committee_a` (
-  `com_a_id` int(11) NOT NULL AUTO_INCREMENT,
-  `com_a` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '委員a',
+CREATE TABLE `committee_a` (
+  `com_a_id` int(11) NOT NULL,
+  `com_a` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '委員a',
   `com_area` int(10) NOT NULL COMMENT '區域',
-  `com_a_addr` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
-  `com_a_mail` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email',
-  PRIMARY KEY (`com_a_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `com_a_addr` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
+  `com_a_mail` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `committee_a`
@@ -243,14 +228,12 @@ INSERT INTO `committee_a` (`com_a_id`, `com_a`, `com_area`, `com_a_addr`, `com_a
 -- 資料表結構 `committee_b`
 --
 
-DROP TABLE IF EXISTS `committee_b`;
-CREATE TABLE IF NOT EXISTS `committee_b` (
-  `com_b_id` int(11) NOT NULL AUTO_INCREMENT,
-  `com_b` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '委員b',
-  `com_b_addr` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
-  `com_b_mail` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email',
-  PRIMARY KEY (`com_b_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=53 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `committee_b` (
+  `com_b_id` int(11) NOT NULL,
+  `com_b` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '委員b',
+  `com_b_addr` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '地址',
+  `com_b_mail` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Email'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `committee_b`
@@ -316,16 +299,14 @@ INSERT INTO `committee_b` (`com_b_id`, `com_b`, `com_b_addr`, `com_b_mail`) VALU
 -- 資料表結構 `contact`
 --
 
-DROP TABLE IF EXISTS `contact`;
-CREATE TABLE IF NOT EXISTS `contact` (
-  `con_id` int(11) NOT NULL AUTO_INCREMENT,
-  `con_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人姓名',
-  `con_title` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人職稱',
-  `con_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人電話',
-  `con_email` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人email',
-  `con_no` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
-  PRIMARY KEY (`con_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `contact` (
+  `con_id` int(11) NOT NULL,
+  `con_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人姓名',
+  `con_title` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人職稱',
+  `con_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人電話',
+  `con_email` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人email',
+  `con_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '案號'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `contact`
@@ -364,15 +345,13 @@ INSERT INTO `contact` (`con_id`, `con_name`, `con_title`, `con_phone`, `con_emai
 -- 資料表結構 `date`
 --
 
-DROP TABLE IF EXISTS `date`;
-CREATE TABLE IF NOT EXISTS `date` (
-  `d_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `date` (
+  `d_id` int(11) NOT NULL,
   `d_date` date NOT NULL COMMENT '評核日期',
-  `d_week` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '評核星期',
-  `d_per` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '評核時段',
-  `d_no` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
-  PRIMARY KEY (`d_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `d_week` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '評核星期',
+  `d_per` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '評核時段',
+  `d_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '案號'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `date`
@@ -411,14 +390,12 @@ INSERT INTO `date` (`d_id`, `d_date`, `d_week`, `d_per`, `d_no`) VALUES
 -- 資料表結構 `job`
 --
 
-DROP TABLE IF EXISTS `job`;
-CREATE TABLE IF NOT EXISTS `job` (
-  `job_id` int(11) NOT NULL AUTO_INCREMENT,
-  `job_upload` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '結案上傳',
-  `job_closed` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '結案發文',
-  `job_ps` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '備註',
-  PRIMARY KEY (`job_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `job` (
+  `job_id` int(11) NOT NULL,
+  `job_upload` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '結案上傳',
+  `job_closed` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '結案發文',
+  `job_ps` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '備註'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `job`
@@ -457,19 +434,17 @@ INSERT INTO `job` (`job_id`, `job_upload`, `job_closed`, `job_ps`) VALUES
 -- 資料表結構 `object`
 --
 
-DROP TABLE IF EXISTS `object`;
-CREATE TABLE IF NOT EXISTS `object` (
-  `ob_id` int(11) NOT NULL AUTO_INCREMENT,
-  `ob_ver` enum('企業機構版','訓練機構版','外訓版','辦訓能力檢核表') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '評核版本',
-  `ob_office` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '受評單位',
-  `ob_add_c` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '公司地址',
-  `ob_ass_a` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '諮詢地址',
-  `ob_count` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '輔導次數',
-  `ob_evcount` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '評核次數',
-  `ob_no` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
-  `ob_con_name` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人',
-  PRIMARY KEY (`ob_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+CREATE TABLE `object` (
+  `ob_id` int(11) NOT NULL,
+  `ob_ver` enum('企業機構版','訓練機構版','外訓版','辦訓能力檢核表') COLLATE utf8_unicode_ci NOT NULL COMMENT '評核版本',
+  `ob_office` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '受評單位',
+  `ob_add_c` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '公司地址',
+  `ob_ass_a` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT '諮詢地址',
+  `ob_count` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '輔導次數',
+  `ob_evcount` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '評核次數',
+  `ob_no` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '案號',
+  `ob_con_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL COMMENT '聯絡人'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 傾印資料表的資料 `object`
@@ -501,6 +476,158 @@ INSERT INTO `object` (`ob_id`, `ob_ver`, `ob_office`, `ob_add_c`, `ob_ass_a`, `o
 (23, '企業機構版', '詠基工業股份有限公司', '414台中市烏日區', '', '1', '', '23', '23'),
 (24, '企業機構版', '國霖機電管理服務股份有限公司', '432台中市中區', '', '2', '', '24', '24'),
 (25, '企業機構版', '青廷自動化有限公司|台中專業半自動化設備', '412台中市大里區', '', '2', '', '25', '25');
+
+--
+-- 已傾印資料表的索引
+--
+
+--
+-- 資料表索引 `accompany`
+--
+ALTER TABLE `accompany`
+  ADD PRIMARY KEY (`acc_id`);
+
+--
+-- 資料表索引 `allowance`
+--
+ALTER TABLE `allowance`
+  ADD PRIMARY KEY (`all_id`);
+
+--
+-- 資料表索引 `application`
+--
+ALTER TABLE `application`
+  ADD PRIMARY KEY (`app_id`);
+
+--
+-- 資料表索引 `area`
+--
+ALTER TABLE `area`
+  ADD PRIMARY KEY (`a_id`);
+
+--
+-- 資料表索引 `assistant`
+--
+ALTER TABLE `assistant`
+  ADD PRIMARY KEY (`ass_id`);
+
+--
+-- 資料表索引 `case_number`
+--
+ALTER TABLE `case_number`
+  ADD PRIMARY KEY (`c_id`);
+
+--
+-- 資料表索引 `committee_a`
+--
+ALTER TABLE `committee_a`
+  ADD PRIMARY KEY (`com_a_id`);
+
+--
+-- 資料表索引 `committee_b`
+--
+ALTER TABLE `committee_b`
+  ADD PRIMARY KEY (`com_b_id`);
+
+--
+-- 資料表索引 `contact`
+--
+ALTER TABLE `contact`
+  ADD PRIMARY KEY (`con_id`);
+
+--
+-- 資料表索引 `date`
+--
+ALTER TABLE `date`
+  ADD PRIMARY KEY (`d_id`);
+
+--
+-- 資料表索引 `job`
+--
+ALTER TABLE `job`
+  ADD PRIMARY KEY (`job_id`);
+
+--
+-- 資料表索引 `object`
+--
+ALTER TABLE `object`
+  ADD PRIMARY KEY (`ob_id`);
+
+--
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
+--
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `accompany`
+--
+ALTER TABLE `accompany`
+  MODIFY `acc_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `allowance`
+--
+ALTER TABLE `allowance`
+  MODIFY `all_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `application`
+--
+ALTER TABLE `application`
+  MODIFY `app_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `area`
+--
+ALTER TABLE `area`
+  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `assistant`
+--
+ALTER TABLE `assistant`
+  MODIFY `ass_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `case_number`
+--
+ALTER TABLE `case_number`
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `committee_a`
+--
+ALTER TABLE `committee_a`
+  MODIFY `com_a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `committee_b`
+--
+ALTER TABLE `committee_b`
+  MODIFY `com_b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `contact`
+--
+ALTER TABLE `contact`
+  MODIFY `con_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `date`
+--
+ALTER TABLE `date`
+  MODIFY `d_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `job`
+--
+ALTER TABLE `job`
+  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- 使用資料表自動遞增(AUTO_INCREMENT) `object`
+--
+ALTER TABLE `object`
+  MODIFY `ob_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
