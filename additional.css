@@ -17,10 +17,6 @@ body {
 .content tr:nth-child(even) {
   background-color: #f1bbba54;
 }
-table.table.content td,
-table.table.content th {
-  padding: 0.5rem;
-}
 .clr {
   color: #f68657;
   font-weight: bolder;
