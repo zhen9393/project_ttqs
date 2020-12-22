@@ -1,0 +1,96 @@
+.col-lg-12, .col-lg-4, .col-lg-3, .col-lg-1 {
+  padding-right: 0;
+}
+
+.content tr:nth-child(even), .content tr:nth-child(odd) {
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+}
+.content tr:hover:nth-child(even), .content tr:hover:nth-child(odd) {
+  background-color: #b5babe77;
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.1);
+  overflow: auto;
+}
+
+html,
+body {
+  font-size: medium;
+}
+
+input[type=submit] {
+  font-family: FontAwesome;
+  background-color: #8cd79077;
+  color: #121212;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  outline-style: none;
+  -webkit-box-shadow: 3px 2px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 2px 10px 0px rgba(0, 0, 0, 0.3);
+  -webkit-transition: all 0.2s ease-in;
+  -moz-transition: all 0.2s ease-in;
+  -ms-transition: all 0.2s ease-in;
+  -o-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+}
+input[type=submit]:hover {
+  background-color: #8cd790;
+  color: #fcfff5;
+  outline-style: none;
+}
+input[type=submit]:active {
+  -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  outline-style: none;
+}
+
+.searchbar {
+  background-color: #a79c8e1f;
+  border-radius: 20px;
+  margin: 3em auto;
+  padding: 0.5em;
+}
+
+form {
+  padding: 0.5em;
+}
+
+.clr {
+  color: #f68657;
+  font-weight: bolder;
+  font-size: 1.2em;
+  margin: 0 0.5rem;
+}
+
+.content thead tr:first-child {
+  background-color: #cbe86b83;
+}
+.content tr:nth-child(odd) {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  background-color: #f8ecc98a;
+}
+.content tr:nth-child(even) {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  background-color: #f1bbba54;
+}
+
+.col-lg-4 {
+  flex: 0 0 30%;
+}
+
+/*# sourceMappingURL=custom.css.map */

@@ -1,0 +1,93 @@
+@mixin prefix($property, $value) {
+  -webkit-#{$property}: $value;
+  -moz-#{$property}: $value;
+  -ms-#{$property}: $value;
+  -o-#{$property}: $value;
+  #{$property}: $value;
+}
+@mixin transition($value) {
+  @include prefix(transition, $value);
+}
+@mixin scale($value) {
+  @include prefix(transform, $value);
+}
+%pr {
+  padding-right: 0;
+}
+%hov-effec {
+  @include transition(all 0.3s ease-out);
+  &:hover {
+    background-color: #b5babe77;
+    @include scale(scale(1.1));
+    overflow: auto;
+  }
+}
+html,
+body {
+  font-size: medium;
+}
+input[type='submit'] {
+  font-family: FontAwesome;
+  background-color: #8cd79077;
+  color: #121212;
+  cursor: pointer;
+  border: none;
+  border-radius: 50%;
+  outline-style: none;
+  -webkit-box-shadow: 3px 2px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 3px 2px 10px 0px rgba(0, 0, 0, 0.3);
+  @include transition(all 0.2s ease-in);
+  &:hover {
+    background-color: #8cd790;
+    color: #fcfff5;
+    outline-style: none;
+  }
+  &:active {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    outline-style: none;
+  }
+}
+.searchbar {
+  background-color: #a79c8e1f;
+  border-radius: 20px;
+  margin: 3em auto;
+  padding: 0.5em;
+}
+form {
+  padding: 0.5em;
+}
+.clr {
+  color: #f68657;
+  font-weight: bolder;
+  font-size: 1.2em;
+  margin: 0 0.5rem;
+}
+.content {
+  thead tr:first-child {
+    background-color: #cbe86b83;
+  }
+  tr:nth-child(odd) {
+    @include scale(scale(1));
+    @extend %hov-effec;
+    background-color: #f8ecc98a;
+  }
+  tr:nth-child(even) {
+    @include scale(scale(1));
+    @extend %hov-effec;
+    background-color: #f1bbba54;
+  }
+}
+.col-lg-1 {
+  @extend %pr;
+}
+.col-lg-3 {
+  @extend %pr;
+}
+.col-lg-4 {
+  @extend %pr;
+  flex: 0 0 30%;
+}
+.col-lg-12 {
+  @extend %pr;
+}
