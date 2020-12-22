@@ -8,17 +8,13 @@
 @mixin transition($value) {
   @include prefix(transition, $value);
 }
-@mixin scale($value) {
-  @include prefix(transform, $value);
-}
 %pr {
   padding-right: 0;
 }
 %hov-effec {
-  @include transition(all 0.3s ease-out);
+  @include transition(all 0.2s ease-out);
   &:hover {
-    background-color: #b5babe77;
-    @include scale(scale(1.1));
+    background-color: #a2b59f6b;
     overflow: auto;
   }
 }
@@ -68,12 +64,10 @@ form {
     background-color: #cbe86b83;
   }
   tr:nth-child(odd) {
-    @include scale(scale(1));
     @extend %hov-effec;
     background-color: #f8ecc98a;
   }
   tr:nth-child(even) {
-    @include scale(scale(1));
     @extend %hov-effec;
     background-color: #f1bbba54;
   }
