@@ -47,7 +47,7 @@ if ((isset($_SESSION["action"]) && $_SESSION["action"] == "search") || ($_GET["p
 		$total_rec = $all_RecBoard->num_rows;
 		// 預處理執行
 		$stmt_limit->execute();
-		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $combaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
 		$show_month = $_SESSION["month"];
 		// 只查詢月份或委員名字
 	} else {
@@ -64,7 +64,7 @@ if ((isset($_SESSION["action"]) && $_SESSION["action"] == "search") || ($_GET["p
 		$all_RecBoard = $db_link->query("{$sql_query_search} WHERE d_date LIKE '{$s_month}' OR committee_a.com_a = '{$s_name}' OR committee_b.com_b = '{$s_name}'");
 		$total_rec = $all_RecBoard->num_rows;
 		$stmt_limit->execute();
-		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+		$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $combaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
 		$show_month = $_SESSION["month"];
 	}
 } else { // 若未執行查詢
@@ -80,7 +80,7 @@ if ((isset($_SESSION["action"]) && $_SESSION["action"] == "search") || ($_GET["p
 	$total_rec = $all_RecBoard->num_rows;
 	// 加限制條件預處理執行
 	$stmt_limit->execute();
-	$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $comabaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
+	$stmt_limit->bind_result($caseno, $casecid, $csign, $oboffice, $obver, $obaddc, $obcount, $obevcount, $coma, $comaaddr, $comamail, $comb, $combaddr, $combmail, $assactual, $assaddr, $assmail, $ddate, $dweek, $dper, $conname, $conphone, $conemail, $jobupload, $jobclosed);
 	$show_month = $now_month; // 顯示月份
 }
 // 計算頁數（無條件進位）
@@ -243,7 +243,7 @@ if ($show_month < 10) {
 										<br><?php echo $comamail; ?>
 									</td>
 									<!-- B委員 -->
-									<?php if (!empty($obcount)) { ?>
+									<?php if (!empty($obcount)) { //若有輔導次數 ?>
 										<td class="d-lg-table-cell">
 											第<?php echo $obcount; ?>次輔導
 											<br><?php echo $combaddr; ?>
