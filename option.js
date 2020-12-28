@@ -18,8 +18,7 @@ $(function () {
 					}
 				}
 			},
-			error: function (xhr, status, msg) {
-				console.error(xhr);
+			error: function (msg) {
 				console.error(msg);
 			}
 		})
